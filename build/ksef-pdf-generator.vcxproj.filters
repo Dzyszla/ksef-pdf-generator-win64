@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="..">
+      <UniqueIdentifier>{739DB09A-CC57-A953-A6CF-F64FA08E4FA7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\src">
+      <UniqueIdentifier>{8CDEE807-BC53-E450-C8B8-4DEBB66742D4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\src\addon">
+      <UniqueIdentifier>{D4322C7C-EC74-82D5-5B4F-DFCB967526B5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Q:">
+      <UniqueIdentifier>{A7216412-0775-3B01-1637-5E94DF3FD984}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Q:\EkonomSrc">
+      <UniqueIdentifier>{20D60C82-25FA-438B-2EB0-6774DAA9B727}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Q:\EkonomSrc\3_wersja_robocza_XE">
+      <UniqueIdentifier>{FA7ED4F9-B72E-E0B9-9F24-43F44344C8DB}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Q:\EkonomSrc\3_wersja_robocza_XE\Apps">
+      <UniqueIdentifier>{6CE2F6C5-EFF6-AF9C-D9AF-FC91E2CBAFC1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Q:\EkonomSrc\3_wersja_robocza_XE\Apps\ksef-pdf-generator">
+      <UniqueIdentifier>{490924EE-CE0C-640F-ED39-F52402024776}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Q:\EkonomSrc\3_wersja_robocza_XE\Apps\ksef-pdf-generator\node_modules">
+      <UniqueIdentifier>{56DF7A98-063D-FB9D-485C-089023B4C16A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Q:\EkonomSrc\3_wersja_robocza_XE\Apps\ksef-pdf-generator\node_modules\node-gyp">
+      <UniqueIdentifier>{77348C0E-2034-7791-74D5-63C077DF5A3B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Q:\EkonomSrc\3_wersja_robocza_XE\Apps\ksef-pdf-generator\node_modules\node-gyp\src">
+      <UniqueIdentifier>{8CDEE807-BC53-E450-C8B8-4DEBB66742D4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..">
+      <UniqueIdentifier>{739DB09A-CC57-A953-A6CF-F64FA08E4FA7}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\addon\ksef-pdf-generator-embedded.cpp">
+      <Filter>..\src\addon</Filter>
+    </ClCompile>
+    <ClCompile Include="Q:\EkonomSrc\3_wersja_robocza_XE\Apps\ksef-pdf-generator\node_modules\node-gyp\src\win_delay_load_hook.cc">
+      <Filter>Q:\EkonomSrc\3_wersja_robocza_XE\Apps\ksef-pdf-generator\node_modules\node-gyp\src</Filter>
+    </ClCompile>
+    <None Include="..\binding.gyp">
+      <Filter>..</Filter>
+    </None>
+  </ItemGroup>
+</Project>
