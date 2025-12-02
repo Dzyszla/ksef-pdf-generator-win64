@@ -37,6 +37,8 @@ Aplikacja uruchomi się domyślnie pod adresem: [http://localhost:5173/](http://
 
 ## 2.1 Budowanie bibliotki
 
+Uwaga! Informacje o kompilacji dla Windows znajdują się w pliku [a relative link](BUILD_EXE.md)
+
 1. Jak zbudować bibliotekę produkcyjnie:
    ```bash
    npm run build
@@ -125,3 +127,4 @@ Raport: /coverage/index.html
 
 - Upewnij się, że pliki XML są poprawnie sformatowane zgodnie z odpowiednią schemą.
 - W przypadku problemów z Node.js, rozważ użycie menedżera wersji Node, np. [nvm](https://github.com/nvm-sh/nvm).
+
