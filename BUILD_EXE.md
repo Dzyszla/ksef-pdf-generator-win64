@@ -21,22 +21,20 @@
    - Skompiluje kod TypeScript do JavaScript (CommonJS)
    - Utworzy pliki JavaScript w katalogu `dist-cli/`
 
-3. **Rozmiar skompilowanych plików**: ~2.9 MB (vs ~36 MB dla pakowanego .exe)
-
 ## Użycie skompilowanej aplikacji
 
-### Sposób 1: Użycie pliku .bat (Windows)
+### Sposób 1: Użycie pliku .exe (Windows)
 
 Najprostszy sposób na Windows - użyj pliku `ksef-pdf-generator.bat`:
 
 #### Generowanie faktury PDF:
 ```bash
-ksef-pdf-generator.bat -i invoice.xml -t invoice --nrKSeF "123-2025-ABC" --qrCode "https://example.com/qr"
+ksef-pdf-generator.exe -i invoice.xml -t invoice --nrKSeF "123-2025-ABC" --qrCode "https://example.com/qr"
 ```
 
 #### Generowanie UPO PDF:
 ```bash
-ksef-pdf-generator.bat -i upo.xml -t upo -o output.pdf
+ksef-pdf-generator.exe -i upo.xml -t upo -o output.pdf
 ```
 
 ### Sposób 2: Bezpośrednie uruchomienie przez Node.js
@@ -103,11 +101,5 @@ node dist-cli/cli.min.js --help
 - **Tryb strumieniowy**: Tryb strumieniowy (`--stream`) jest idealny do integracji z innymi aplikacjami
 - **Komunikaty błędów**: W trybie strumieniowym wszystkie komunikaty błędów są zapisywane do stderr, a dane wyjściowe (PDF) do stdout
 
-## Porównanie z pakowaniem
-
-| Metoda | Rozmiar | Wymaga Node.js | Zalety | Wady |
-|--------|---------|----------------|--------|------|
-| **Bez pakowania** (obecne) | ~2.9 MB | ✅ Tak | Mały rozmiar, łatwa aktualizacja | Wymaga Node.js |
-| **Z pakowaniem (.exe)** | ~36 MB | ❌ Nie | Samodzielny plik | Duży rozmiar, problemy z metadanymi |
 
 
