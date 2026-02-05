@@ -4,6 +4,15 @@ Biblioteka do generowania wizualizacji PDF faktur oraz UPO na podstawie plików 
 
 ---
 
+## 0. EXE
+
+Plik EXE dołączany jest do publikowanych [wydań (releases)](https://github.com/Dzyszla/ksef-pdf-generator-win64/releases) jako załącznik.
+
+Informacje o kompilacji dla Windows znajdują się w pliku [BUILD_EXE.md](BUILD_EXE.md)
+
+    
+---
+
 ## 1. Główne ustalenia
 
     Biblioteka zawiera następujące funkcjonalności:
