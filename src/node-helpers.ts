@@ -18,7 +18,7 @@ import { generateDokumnetUPO } from './lib-public/generators/UPO4_2/Dokumenty';
 import { Position } from './shared/enums/common.enum';
 
 // Inicjalizacja pdfmake z czcionkami (wymagane dla Node.js)
-pdfMake.vfs = pdfFonts.vfs;
+pdfMake.vfs = pdfFonts.vfs as { [file: string]: string };
 
 /**
  * Parsuje XML z ciągu znaków (dla Node.js)

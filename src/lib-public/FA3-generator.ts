@@ -21,7 +21,7 @@ import { Faktura } from './types/fa3.types';
 import { ZamowienieKorekta } from './enums/invoice.enums';
 import { AdditionalDataTypes } from './types/common.types';
 
-pdfMake.vfs = pdfFonts.vfs;
+pdfMake.vfs = pdfFonts.vfs as { [file: string]: string };
 
 export function generateFA3(invoice: Faktura, additionalData: AdditionalDataTypes): TCreatedPdf {
   const isKOR_RABAT: boolean =
