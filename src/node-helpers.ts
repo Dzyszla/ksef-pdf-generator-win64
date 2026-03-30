@@ -64,7 +64,7 @@ export async function generateInvoiceNode(
       break;
     case 'FA_RR(1)':
     case 'FA_RR (1)':
-      pdf = generateFARR((xml as any).Faktura as Faktura3, additionalData);
+      pdf = generateFARR((xml as any).Faktura as FakturaRR, additionalData);
       break;
     default:
       throw new Error(`Nieobsługiwana wersja faktury: ${wersja}`);
