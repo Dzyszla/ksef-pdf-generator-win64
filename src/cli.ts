@@ -12,6 +12,7 @@ interface CliArgs {
   type: 'invoice' | 'upo';
   nrKSeF?: string;
   qrCode?: string;
+  qr2Code?: string;
   stream: boolean;
 }
 
@@ -60,6 +61,12 @@ function parseArgs(): CliArgs {
           i++;
         }
         break;
+      case '--qr2Code':
+        if (nextArg) {
+          result.qr2Code = nextArg;
+          i++;
+        }
+        break;
       case '--help':
       case '-h':
         printHelp();
@@ -100,6 +107,7 @@ Opcje:
   -t, --type <typ>           Typ dokumentu: 'invoice' lub 'upo' (wymagane)
   --nrKSeF <wartość>         Numer KSeF (wymagane dla faktur)
   --qrCode <url>             URL kodu QR (wymagane dla faktur), obsługuje parametry {hash}, {nip}, {p1}
+  --qr2Code <url>            URL kodu QR2 (wymagane dla faktur), obsługuje parametry {hash}, {nip}, {p1}
   --stream                   Tryb strumieniowy: XML ze stdin, PDF do stdout
   -h, --help                 Wyświetla tę pomoc
 
@@ -276,9 +284,22 @@ async function main(): Promise<void> {
         process.exit(1);
       }
 
+      let processedQR2Code: string;
+      if (args.qr2Code) {
+	      try {
+	        	processedQR2Code = processQRCodeTemplate(args.qr2Code, inputContent, parsedXml);
+	      } catch (error) {
+	        process.stderr.write(`Błąd podczas przetwarzania qr2Code: ${error}\n`);
+	        process.exit(1);
+	      }
+       }
+       else
+       	processedQR2Code = '';
+
       const additionalData: AdditionalDataTypes = {
         nrKSeF: args.nrKSeF,
         qrCode: processedQRCode,
+        qr2Code: processedQR2Code,
       };
 
       if (!args.stream) {

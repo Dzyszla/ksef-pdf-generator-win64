@@ -1,5 +1,5 @@
 1 VERSIONINFO
-FILEVERSION 1,1,0,0
+FILEVERSION 1,1,0,1
 PRODUCTVERSION 1,1,0,0
 FILEOS 0x4
 FILETYPE 0x2
@@ -10,7 +10,7 @@ BLOCK "StringFileInfo"
 	{
 		VALUE "CompanyName", "Proman"
 		VALUE "FileDescription", "Generator PDF faktur KSeF"
-		VALUE "FileVersion", "1.1.0.0"
+		VALUE "FileVersion", "1.1.0.1"
 		VALUE "LegalCopyright", "Proman"
 		VALUE "OriginalFilename", "KSeF-PDFGen.exe"
 		VALUE "ProductName", "ksef-pdf-generator"

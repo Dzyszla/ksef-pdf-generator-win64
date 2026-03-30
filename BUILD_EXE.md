@@ -3,7 +3,7 @@
 ## Wymagania
 
 - Node.js w wersji 18 lub wyższej
-- npm lub yarn
+- npm
 
 ## Kroki kompilacji
 
@@ -14,12 +14,8 @@
 
 2. **Skompiluj aplikację**:
    ```bash
-   npm run build:cli
+   npm run build
    ```
-
-   To polecenie:
-   - Skompiluje kod TypeScript do JavaScript (CommonJS)
-   - Utworzy pliki JavaScript w katalogu `dist-cli/`
 
 ## Użycie skompilowanej aplikacji
 
@@ -27,7 +23,7 @@
 
 #### Generowanie faktury PDF:
 ```bash
-ksef-pdf-generator.exe -i invoice.xml -o invoice.pdf -t invoice --nrKSeF "123-2025-ABC" --qrCode "https://example.com/qr"
+ksef-pdf-generator.exe -i invoice.xml -o invoice.pdf -t invoice --nrKSeF "123-2025-ABC" --qrCode "https://qr-test.ksef.mf.gov.pl/invoice/{nip}/{p1}/{hash}"
 ```
 
 #### Generowanie UPO PDF:
@@ -37,7 +33,12 @@ ksef-pdf-generator.exe -i upo.xml -t upo -o upo.pdf
 
 #### Generowanie faktury PDF w strumieniu z użyciem parametrów dla kodu QR:
 ```bash
-ksef-pdf-generator.exe --stream -t invoice --nrKSeF "123-2025-ABC" --qrCode "https://ksef.mf.gov.pl/client-app/invoice/{nip}/{p1}/{hash}" < invoice.xml > invoice.pdf
+ksef-pdf-generator.exe --stream -t invoice --nrKSeF "123-2025-ABC" --qrCode "https://qr-test.ksef.mf.gov.pl/invoice/{nip}/{p1}/{hash}" < invoice.xml > invoice.pdf
+```
+
+#### Generowanie faktury PDF dla trybu OFFLINE:
+```bash
+ksef-pdf-generator.exe -i invoice.xml -o invoice.pdf -t invoice --nrKSeF "123-2025-ABC" --qrCode "https://qr-test.ksef.mf.gov.pl/invoice/{nip}/{p1}/{hash}" --qr2Code "https://qr-test.ksef.mf.gov.pl/certificate/Nip/1111111111/{nip}/01F20A5D352AE590/..."
 ```
 
 ### Pomoc:
@@ -52,6 +53,7 @@ ksef-pdf-generator.exe --help
 - `-t, --type <typ>` - Typ dokumentu: `invoice` lub `upo` (wymagane)
 - `--nrKSeF <wartość>` - Numer KSeF (wymagane dla faktur)
 - `--qrCode <url>` - URL kodu QR (wymagane dla faktur)
+- `--qr2Code <url>` - URL kodu QR2 (dla faktur w trybie OFFLINE)
 - `--stream` - Tryb strumieniowy: XML ze stdin, PDF do stdout
 - `-h, --help` - Wyświetla pomoc
 
