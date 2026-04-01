@@ -51,7 +51,8 @@ function parseArgs(): CliArgs {
         break;
       case '--nrKSeF':
         if (nextArg) {
-          result.nrKSeF = nextArg;
+        	if (!result.qrCode2) 
+          		result.nrKSeF = nextArg;
           i++;
         }
         break;
@@ -64,6 +65,7 @@ function parseArgs(): CliArgs {
       case '--qr2Code':
         if (nextArg) {
           result.qr2Code = nextArg;
+          result.nrKSeF = 'OFFLINE';
           i++;
         }
         break;
@@ -99,7 +101,13 @@ function printHelp(): void {
 KSEF PDF Generator - Generator PDF dla faktur i UPO
 
 Użycie:
-  ${exeName} [opcje]
+  ${exeName} -t upo -i <ścieżka> -o <ścieżka>
+  ${exeName} -t upo --stream
+  ${exeName} -t invoice -i <ścieżka> -o <ścieżka> --nrKSeF <url> --qrCode <url>
+  ${exeName} -t invoice -i <ścieżka> -o <ścieżka> --qrCode <url> --qrCode2 <url>
+  ${exeName} -t invoice --nrKSeF <url> --qrCode <url> --stream
+  ${exeName} -t invoice --qrCode <url> --qrCode2 <url> --stream
+  ${exeName} -h
 
 Opcje:
   -i, --input <ścieżka>      Ścieżka do pliku XML wejściowego (wymagane w trybie plikowym)
@@ -113,13 +121,16 @@ Opcje:
 
 Przykłady:
   # Generowanie faktury (tryb plikowy)
-  ${exeName} -i invoice.xml -t invoice --nrKSeF "123-2025-ABC" --qrCode "https://ksef.mf.gov.pl/client-app/invoice/{nip}/{p1}/{hash}"
+  ${exeName} -i invoice.xml -t invoice --nrKSeF "1111111111-20251107-080080679C57-14" --qrCode "https://qr.ksef.mf.gov.pl/invoice/{nip}/{p1}/{hash}"
+
+  # Generowanie faktury offline (tryb plikowy)
+  ${exeName} -i invoice.xml -t invoice --qrCode "https://qr.ksef.mf.gov.pl/invoice/{nip}/{p1}/{hash}" --qrCode2 "https://qr.ksef.mf.gov.pl/certificate/Nip/1111111111/{nip}/01F20A5D352AE590/..."
 
   # Generowanie UPO (tryb plikowy)
   ${exeName} -i upo.xml -t upo -o output.pdf
 
   # Generowanie faktury (tryb strumieniowy)
-  ${exeName} --stream -t invoice --nrKSeF "123-2025-ABC" --qrCode "https://ksef.mf.gov.pl/client-app/invoice/{nip}/{p1}/{hash}" < invoice.xml > output.pdf
+  ${exeName} --stream -t invoice --nrKSeF "1111111111-20251107-080080679C57-14" --qrCode "https://qr.ksef.mf.gov.pl/invoice/{nip}/{p1}/{hash}" < invoice.xml > output.pdf
 
   # Generowanie UPO (tryb strumieniowy)
   ${exeName} --stream -t upo < upo.xml > output.pdf
@@ -170,7 +181,7 @@ function extractNIP(xml: any): string | null {
 /**
  * Wyciąga wartość P_1 z parsowanego XML i formatuje na dd-mm-yyyy
  */
-function extractP1Formatted(xml: any): string | null {
+function extractP1Formatted(xml: any): String | null {
   const p1 = xml?.Faktura?.Fa?.P_1;
   if (!p1) {
     return null;
@@ -262,7 +273,7 @@ async function main(): Promise<void> {
 
     if (args.type === 'invoice') {
       if (!args.nrKSeF || !args.qrCode) {
-        process.stderr.write('Błąd: Dla faktur wymagane są parametry --nrKSeF i --qrCode\n');
+        process.stderr.write('Błąd: Dla faktur wymagane są parametry --nrKSeF i --qrCode lub --qrCode i --qrCode2\n');
         process.exit(1);
       }
 

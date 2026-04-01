@@ -23,7 +23,12 @@
 
 #### Generowanie faktury PDF:
 ```bash
-ksef-pdf-generator.exe -i invoice.xml -o invoice.pdf -t invoice --nrKSeF "123-2025-ABC" --qrCode "https://qr-test.ksef.mf.gov.pl/invoice/{nip}/{p1}/{hash}"
+ksef-pdf-generator.exe -i invoice.xml -o invoice.pdf -t invoice --nrKSeF "1111111111-20251107-080080679C57-14" --qrCode "https://qr.ksef.mf.gov.pl/invoice/{nip}/{p1}/{hash}"
+```
+
+#### Generowanie faktury PDF dla trybu OFFLINE:
+```bash
+ksef-pdf-generator.exe -i invoice.xml -o invoice.pdf -t invoice --nrKSeF "123-2025-ABC" --qrCode "https://qr.ksef.mf.gov.pl/invoice/{nip}/{p1}/{hash}" --qr2Code "https://qr.ksef.mf.gov.pl/certificate/Nip/1111111111/{nip}/01F20A5D352AE590/..."
 ```
 
 #### Generowanie UPO PDF:
@@ -33,12 +38,7 @@ ksef-pdf-generator.exe -i upo.xml -t upo -o upo.pdf
 
 #### Generowanie faktury PDF w strumieniu z użyciem parametrów dla kodu QR:
 ```bash
-ksef-pdf-generator.exe --stream -t invoice --nrKSeF "123-2025-ABC" --qrCode "https://qr-test.ksef.mf.gov.pl/invoice/{nip}/{p1}/{hash}" < invoice.xml > invoice.pdf
-```
-
-#### Generowanie faktury PDF dla trybu OFFLINE:
-```bash
-ksef-pdf-generator.exe -i invoice.xml -o invoice.pdf -t invoice --nrKSeF "123-2025-ABC" --qrCode "https://qr-test.ksef.mf.gov.pl/invoice/{nip}/{p1}/{hash}" --qr2Code "https://qr-test.ksef.mf.gov.pl/certificate/Nip/1111111111/{nip}/01F20A5D352AE590/..."
+ksef-pdf-generator.exe --stream -t invoice --nrKSeF "123-2025-ABC" --qrCode "https://qr.ksef.mf.gov.pl/invoice/{nip}/{p1}/{hash}" < invoice.xml > invoice.pdf
 ```
 
 ### Pomoc:
