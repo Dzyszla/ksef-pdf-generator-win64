@@ -37,13 +37,6 @@ export function formatDateTime(data?: string, withoutSeconds?: boolean, withoutT
 }
 
 export function formatDateTimePl(value: string, withTime?: boolean, withSeconds?: boolean): string {
-  const optionsForDate: Intl.DateTimeFormatOptions = { year: 'numeric', month: '2-digit', day: '2-digit' };
-  const optionsForTime: Intl.DateTimeFormatOptions = {
-    hour: '2-digit',
-    minute: '2-digit',
-  };
-  const optionsForSeconds: Intl.DateTimeFormatOptions = { second: '2-digit' };
-
   if (!value) {
     return '';
   }
@@ -53,14 +46,27 @@ export function formatDateTimePl(value: string, withTime?: boolean, withSeconds?
     return value;
   }
 
-  return new Intl.DateTimeFormat('pl-PL', {
-    timeZone: 'Europe/Warsaw',
-    ...optionsForDate,
-    ...(withTime && optionsForTime),
-    ...(withSeconds && optionsForSeconds),
-  })
-    .format(date)
-    .replace(', ', ' ');
+  const pad = (n: number) => n.toString().padStart(2, '0');
+
+  const day = pad(date.getDate());
+  const month = pad(date.getMonth() + 1);
+  const year = date.getFullYear();
+
+  let result = `${day}.${month}.${year}`;
+
+  if (withTime) {
+    const hours = pad(date.getHours());
+    const minutes = pad(date.getMinutes());
+
+    result += ` ${hours}:${minutes}`;
+
+    if (withSeconds) {
+      const seconds = pad(date.getSeconds());
+      result += `:${seconds}`;
+    }
+  }
+
+  return result;
 }
 
 export function getDateTimeWithoutSeconds(isoDate?: FP2): string {

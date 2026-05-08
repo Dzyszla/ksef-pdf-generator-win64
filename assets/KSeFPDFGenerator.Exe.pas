@@ -81,7 +81,7 @@ begin
 		raise Exception.Create('Unknown XML type');
 
 	if not aOptions.Watermark.IsEmpty then
-		Cmd := Format('%s --waterkark %s', [Cmd, QuotedStr(aWatermark)]);
+		Cmd := Format('%s --watermark "%s"', [Cmd, aWatermark.Replace('"', '""')]);
 
 	if not aOptions.LangFileName.IsEmpty and FileExists(aOptions.LangFileName) then
 		Cmd := Format('%s --lang %s', [Cmd, QuotedStr(aOptions.LangFileName)]);
