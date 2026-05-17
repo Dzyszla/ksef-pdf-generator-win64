@@ -75,7 +75,7 @@ begin
 	begin
 		if aNrKSeF.IsEmpty then
 			aNrKSeF := '/NIE NADANY/';
-		Cmd := Format('"%sKSeF-PDFGen.exe" --stream --nrKSeF "%s" --qrCode "%s" -t invoice', [ExtractFilePath(ParamStr(0)), ANrKSeF, C_QR1[aEnvironment]);
+		Cmd := Format('"%sKSeF-PDFGen.exe" --stream --nrKSeF "%s" --qrCode "%s" -t invoice', [ExtractFilePath(ParamStr(0)), ANrKSeF, C_QR1[aEnvironment]]);
 	end
 	else
 		raise Exception.Create('Unknown XML type');
