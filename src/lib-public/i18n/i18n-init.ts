@@ -9,23 +9,23 @@ export async function initI18next(
 ): Promise<void> {
   if (!i18next.isInitialized) {
 	  let translations = pl;
-	
+
 	  if (filePath) {
 	    try {
 	      const fullPath = path.resolve(filePath);
 	      const fileContent = await fs.readFile(fullPath, 'utf-8');
 	      translations = JSON.parse(fileContent);
 	    } catch (err) {
-	      process.stderr.write('i18n: nie uda³o siê wczytaæ pliku', err);
+	      process.stderr.write(`i18n: nie udaÅ‚o siÄ™ wczytaÄ‡ pliku: ${err}`);
 	    }
 	  }
-	
+
 	  const resources = {
 	    [lng]: {
 	      translation: translations,
 	    },
 	  };
-	
+
     await i18next.init({
       lng,
       fallbackLng: lng,
