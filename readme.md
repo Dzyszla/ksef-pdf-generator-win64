@@ -10,7 +10,6 @@ Plik EXE dołączany jest do publikowanych [wydań (releases)](https://github.co
 
 Informacje o kompilacji dla Windows znajdują się w pliku [BUILD_EXE.md](BUILD_EXE.md)
 
-    
 ---
 
 ## 1. Główne ustalenia
@@ -21,91 +20,13 @@ Informacje o kompilacji dla Windows znajdują się w pliku [BUILD_EXE.md](BUILD_
 
 ---
 
-## 2. Jak uruchomić aplikację pokazową
-
-1. Zainstaluj Node.js w wersji **22.14.0**  
-   Możesz pobrać Node.js z oficjalnej strony: [https://nodejs.org](https://nodejs.org)
-
-2. Sklonuj repozytorium i przejdź do folderu projektu:
-   ```bash
-   git clone https://github.com/CIRFMF/ksef-pdf-generator#
-   cd ksef-pdf-generator
-   ```
-
-3. Zainstaluj zależności:
-   ```bash
-   npm install
-   ```
-
-4. Uruchom aplikację:
-   ```bash
-   npm run dev
-   ```
-
-Aplikacja uruchomi się domyślnie pod adresem: [http://localhost:5173/](http://localhost:5173/)
-
-## 2.1 Budowanie bibliotki
+## 2. Budowanie bibliotki
 
 Uwaga! Informacje o kompilacji dla Windows znajdują się w pliku [BUILD_EXE.md](BUILD_EXE.md)
 
-1. Jak zbudować bibliotekę produkcyjnie:
-   ```bash
-   npm run build
-   ```
-
-## 3. Jak wygenerować fakturę
-
-1. Po uruchomieniu aplikacji przejdź do **Wygeneruj wizualizacje faktury PDF**.
-2. Wybierz plik XML zgodny ze schemą **FA(1), FA(2) lub FA(3)**.
-3. Przykładowy plik znajduje się w folderze:
-   ```
-   examples/invoice.xml
-   ```  
-4. Po wybraniu pliku, PDF zostanie wygenerowany.
-
 ---
 
-## 4. Jak wygenerować UPO
-
-1. Po uruchomieniu aplikacji przejdź do **Wygeneruj wizualizacje UPO PDF**.
-2. Wybierz plik XML zgodny ze schemą **UPO v4_2**.
-3. Przykładowy plik znajduje się w folderze:
-   ```
-   examples/upo.xml
-   ```  
-4. Po wybraniu pliku, PDF zostanie wygenerowany.
-
----
-
-## 5. Testy jednostkowe
-
-Aplikacja zawiera zestaw testów napisanych w **TypeScript**, które weryfikują poprawność działania aplikacji.  
-Projekt wykorzystuje **Vite** do bundlowania i **Vitest** jako framework testowy.
-
-### Uruchamianie testów
-
-1. Uruchom wszystkie testy:
-   ```bash
-   npm run test
-   ```
-
-2. Uruchom testy z interfejsem graficznym:
-   ```bash
-   npm run test:ui
-   ```
-
-3. Uruchom testy w trybie CI z raportem pokrycia:
-   ```bash
-   npm run test:ci
-   ```
-
----
-
-Raport: /coverage/index.html
-
----
-
-### 6.Lokalizacja - i18next
+## 3. Lokalizacja - i18next
 
 Biblioteka wspiera lokalizację, poprzez użycie biblioteki i18next. Pliki z tłumaczeniami należy umieścic w folderze
 ** src/lib-public/i18n/lang **. Dokumentacja samej biblioteki i18next znajduje się pod adresem https://www.i18next.com/.
@@ -128,14 +49,6 @@ Biblioteka wspiera lokalizację, poprzez użycie biblioteki i18next. Pliki z tł
 
 - Typy odzwierciedlają strukturę danych pobieranych z XML faktur oraz ułatwiają generowanie PDF
 - Typy i interfejsy są definiowane w folderze types oraz plikach z rozszerzeniem types.ts.
-
----
-
-## Dokumentacja używanych narzędzi
-
-- Vitest Docs — https://vitest.dev/guide/
-- Vite Docs — https://vitejs.dev/guide/
-- TypeScript Handbook — https://www.typescriptlang.org/docs/
 
 ---
 
