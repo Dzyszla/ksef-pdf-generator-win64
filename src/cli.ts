@@ -46,6 +46,7 @@ interface CliArgs {
   qr2Code?: string;
   watermark?: string;
   lang?: string;
+  font?: string;
   stream: boolean;
 }
 
@@ -128,6 +129,12 @@ function parseArgs(): CliArgs {
           i++;
         }
         break;
+      case '--font':
+        if (nextArg) {
+          result.font = nextArg;
+          i++;
+        }
+        break;
       case '--help':
       case '-h':
         printHelp();
@@ -160,12 +167,12 @@ function printHelp(): void {
 KSEF PDF Generator - Generator PDF dla faktur i UPO
 
 Użycie:
-  ${exeName} -t upo -i <ścieżka> -o <ścieżka> [--watermark <tekst>] [--lang <ścieżka>]
-  ${exeName} -t upo --stream [--watermark <tekst>] [--lang <ścieżka>]
-  ${exeName} -t invoice -i <ścieżka> -o <ścieżka> [--nrKSeF <wartość>] --qrCode <url> [--acquisitionDate <data>] [--watermark <tekst>] [--lang <ścieżka>]
-  ${exeName} -t invoice -i <ścieżka> -o <ścieżka> --qrCode <url> --qr2Code <url> [--acquisitionDate <data>] [--watermark <tekst>] [--lang <ścieżka>]
-  ${exeName} -t invoice --nrKSeF <url> --qrCode <url> --stream [--acquisitionDate <data>] [--watermark <tekst>] [--lang <ścieżka>]
-  ${exeName} -t invoice --qrCode <url> --qr2Code <url> --stream [--acquisitionDate <data>] [--watermark <tekst>] [--lang <ścieżka>]
+  ${exeName} -t upo -i <ścieżka> -o <ścieżka> [--watermark <tekst>] [--lang <ścieżka>] [--font <nazwa>]
+  ${exeName} -t upo --stream [--watermark <tekst>] [--lang <ścieżka>] [--font <nazwa>]
+  ${exeName} -t invoice -i <ścieżka> -o <ścieżka> [--nrKSeF <wartość>] --qrCode <url> [--acquisitionDate <data>] [--watermark <tekst>] [--lang <ścieżka>] [--font <nazwa>]
+  ${exeName} -t invoice -i <ścieżka> -o <ścieżka> --qrCode <url> --qr2Code <url> [--acquisitionDate <data>] [--watermark <tekst>] [--lang <ścieżka>] [--font <nazwa>]
+  ${exeName} -t invoice --nrKSeF <url> --qrCode <url> --stream [--acquisitionDate <data>] [--watermark <tekst>] [--lang <ścieżka>] [--font <nazwa>]
+  ${exeName} -t invoice --qrCode <url> --qr2Code <url> --stream [--acquisitionDate <data>] [--watermark <tekst>] [--lang <ścieżka>] [--font <nazwa>]
   ${exeName} -h
 
 Opcje:
@@ -178,6 +185,7 @@ Opcje:
   --qr2Code <url>            URL kodu QR2 (wymagane dla faktur), obsługuje parametry {hash}, {nip}, {p1}
   --watermark <tekst>        Tekst w tle strony (znak wodny)
   --lang <ścieżka>           Generowanie faktury w innym języku - w parametrze <ścieżka> plik json z tłumaczeniami dla dokumentu
+  --font <nazwa>              Rodzina czcionek zainstalowana w Windows, np. "Arial" lub "Aptos"
   --stream                   Tryb strumieniowy: XML ze stdin, PDF do stdout
   -h, --help                 Wyświetla tę pomoc
 
@@ -304,8 +312,11 @@ function processQRCodeTemplate(qrCodeTemplate: string, xmlContent: string, xml: 
 async function main(): Promise<void> {
   try {
     const args = parseArgs();
-    const { generateInvoiceNode, generatePDFUPONode, parseXMLString } = await import('./node-helpers');
+    const { configureWindowsFont, generateInvoiceNode, generatePDFUPONode, parseXMLString } = await import('./node-helpers');
     const { i18nReady } = await import('./lib-public/i18n/i18n-init');
+    if (args.font) {
+      configureWindowsFont(args.font);
+    }
     let inputContent: string;
     
     // Tryb strumieniowy - czytaj ze stdin

@@ -10,6 +10,7 @@ type
 		AcDate: TDateTime;
 		Watermark: String;
 		LangFileName: String;
+		FontName: String;
 	end;		
 
 procedure GenPDF(const aXML: TStream; ANrKSeF: string; const aXMLType: TXMLType; const aEnvironment: TEnvironment; const aOutStream: TStream; const aOptions: TGenOptions);
@@ -87,7 +88,10 @@ begin
 		Cmd := Format('%s --watermark "%s"', [Cmd, aWatermark.Replace('"', '""')]);
 
 	if not aOptions.LangFileName.IsEmpty and FileExists(aOptions.LangFileName) then
-		Cmd := Format('%s --lang %s', [Cmd, QuotedStr(aOptions.LangFileName)]);
+		Cmd := Format('%s --lang "%s"', [Cmd, aOptions.LangFileName.Replace('"', '""')]);
+
+	if not aOptions.FontName.IsEmpty then
+		Cmd := Format('%s --font "%s"', [Cmd, aOptions.FontName.Replace('"', '""')]);
 
 	if not CreateProcess(nil, PChar(Cmd), nil, nil, True { dziedziczenie uchwytów},	CREATE_NO_WINDOW, nil, nil, SI, PI) then
 		RaiseLastOSError;
