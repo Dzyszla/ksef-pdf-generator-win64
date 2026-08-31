@@ -1,6 +1,6 @@
 {
   "name": "@akmf/ksef-fe-invoice-converter",
-  "version": "1.1.31 [fork: Win64-exe 1.1.31.0 by Dzyszla]",
+  "version": "1.1.36 [fork: Win64-exe 1.1.36.0 by Dzyszla]",
   "scripts": {
     "build": "npx esbuild src/cli.ts --bundle --platform=node --minify --outfile=dist/bundle.js && npx pkg dist/bundle.js --targets node18-win-x64 -compress GZip --output KSeF-PDFGen.exe",
     "build:with-version": "npm run build && node scripts/apply-rc-version-resourcehacker.cjs"
@@ -43,7 +43,7 @@
     "i18next": "^25.8.4",
     "i18next-browser-languagedetector": "^8.2.0",
     "i18next-http-backend": "^3.0.2",
-    "pdfmake": "0.3.7",
+    "pdfmake": "0.3.11",
     "xml-js": "^1.6.11"
   },
   "pkg": {
