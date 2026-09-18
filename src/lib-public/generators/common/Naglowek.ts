@@ -68,6 +68,7 @@ export function generateNaglowek(
           {
             text: [
               formatText(i18n.t('invoice.header.ksefNumberLabel'), FormatTyp.LabelMedium) as ContentText,
+              ' ',
               formatText(additionalData?.nrKSeF, FormatTyp.ValueMedium),
             ],
             alignment: Position.RIGHT,
