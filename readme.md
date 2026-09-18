@@ -1,3 +1,11 @@
+# Ten fork - Win64
+
+Ten fork tworzy wykonywalny plik EXE konsolowy przeznaczony do środowiska Windows w architekturze 64-bit.
+
+Wynikowa aplikacja pracuje w oknie konsoli i pozwala przyjmować różne parametry w celu wygenerowania PDF na podstawie przekazanego pliku XML z KSeF.
+
+Szczegółowe informacje dostępne są w pliku [BUILD_EXE.md](BUILD_EXE.md).
+
 # Biblioteka do generowania wizualizacji PDF faktur i UPO
 
 Biblioteka do generowania wizualizacji PDF faktur oraz UPO na podstawie plików XML po stronie klienta.
