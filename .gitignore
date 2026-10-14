@@ -24,3 +24,4 @@ ksef-pdf-gen-26_7.rc
 test.bat
 /test
 scripts/set-package-version.cjs
+package-lock.json
