@@ -1,6 +1,6 @@
 1 VERSIONINFO
-FILEVERSION 1,1,40,1
-PRODUCTVERSION 1,1,40,0
+FILEVERSION 1,1,46,0
+PRODUCTVERSION 1,1,46,0
 FILEOS 0x4
 FILETYPE 0x2
 {
@@ -10,12 +10,13 @@ BLOCK "StringFileInfo"
 	{
 		VALUE "CompanyName", "Dzyszla"
 		VALUE "FileDescription", "Generator PDF faktur KSeF"
-		VALUE "FileVersion", "1.1.40.1"
+		VALUE "FileVersion", "1.1.46.0"
 		VALUE "LegalCopyright", "Dzyszla"
 		VALUE "OriginalFilename", "KSeF-PDFGen.exe"
 		VALUE "ProductName", "ksef-pdf-generator"
-		VALUE "ProductVersion", "1.1.40"
+		VALUE "ProductVersion", "1.1.46"
 		VALUE "InternalName", "KSeF-PDFGen"
+		VALUE "Comments", "Project source: https://github.com/Dzyszla/ksef-pdf-generator-win64"
 	}
 }
 

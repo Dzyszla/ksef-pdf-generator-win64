@@ -1,6 +1,6 @@
 {
   "name": "@akmf/ksef-fe-invoice-converter",
-  "version": "[fork: Win64-exe 1.1.40.1 by Dzyszla]",
+  "version": "[fork: Win64-exe 1.1.46.0 by Dzyszla]",
   "scripts": {
     "build": "npx esbuild src/cli.ts --bundle --platform=node --minify --outfile=dist/bundle.js && npx pkg dist/bundle.js --targets node18-win-x64 -compress GZip --output KSeF-PDFGen.exe",
     "build:with-version": "npm run build && node scripts/apply-rc-version-resourcehacker.cjs"

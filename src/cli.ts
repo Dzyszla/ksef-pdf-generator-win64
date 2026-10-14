@@ -3,6 +3,7 @@ import { readFileSync, writeFileSync } from 'fs';
 import { join, resolve, dirname, basename } from 'path';
 import { createHash } from 'crypto';
 import type { AdditionalDataTypes } from './lib-public/types/common.types';
+import packageInfo from '../package.json';
 
 const NativeTextDecoder = globalThis.TextDecoder;
 
@@ -164,7 +165,10 @@ function printHelp(): void {
   const exeName = basename(process.execPath);
   
   console.log(`
-KSEF PDF Generator - Generator PDF dla faktur i UPO
+KSeF PDF Generator ${packageInfo.version}
+Fork projektu Ministerstwa Finansów z obsługą CLI dla Windows 64-bit.
+- Repozytorium forka: https://github.com/Dzyszla/ksef-pdf-generator-win64
+- Oficjalne repozytorium MF: https://github.com/CIRFMF/ksef-pdf-generator
 
 Użycie:
   ${exeName} -t upo -i <ścieżka> -o <ścieżka> [--watermark <tekst>] [--lang <ścieżka>] [--font <nazwa>]
