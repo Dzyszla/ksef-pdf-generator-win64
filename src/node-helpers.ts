@@ -9,7 +9,13 @@ import { Faktura as Faktura2 } from './lib-public/types/fa2.types';
 import { generateFA3 } from './lib-public/FA3-generator';
 import { Faktura as Faktura3 } from './lib-public/types/fa3.types';
 import { generateFARR } from './lib-public/FARR-generator';
-import { Faktura as FakturaRR } from './lib-public/types/faRR.types';
+import { FaRR } from './lib-public/types/FaRR.types';
+import { generateBasicPEF } from './lib-public/PEF-basic-generator';
+import { generateCorrectivePEF } from './lib-public/PEF-corrective-generator';
+import { generateSpecPEF } from './lib-public/PEF-spec-generator';
+import { PEFBasicInvoice } from './lib-public/types/pef-invoice.types';
+import { PEFCorrectiveInvoice } from './lib-public/types/pef-invoice-corrective.types';
+import { PEFSpecInvoice } from './lib-public/types/pef-invoice-spec.types';
 import { stripPrefix } from './shared/XML-parser';
 import { AdditionalDataTypes } from './lib-public/types/common.types';
 import pdfMake from 'pdfmake/build/pdfmake';
@@ -17,10 +23,13 @@ import pdfFonts from 'pdfmake/build/vfs_fonts';
 import { Upo } from './lib-public/types/upo-v4_2.types';
 import { TDocumentDefinitions } from 'pdfmake/interfaces';
 import { generateStyle } from './shared/PDF-functions';
-import { generateNaglowekUPO } from './lib-public/generators/UPO4_2/Naglowek';
-import { generateDokumentUPO } from './lib-public/generators/UPO4_2/Dokumenty';
+import { generateNaglowekUPO } from './lib-public/generators/UPO4_3/Naglowek';
+import { generateDokumentUPO } from './lib-public/generators/UPO4_3/Dokumenty';
 import { Position } from './shared/enums/common.enum';
 import { configureFonts } from './lib-public/configure-fonts';
+import { generateWatermark } from './shared/consts/watermark';
+import { generateInfo } from './shared/utils/generate-info';
+import i18n from 'i18next';
 
 type FontStyle = 'normal' | 'bold' | 'italics' | 'bolditalics';
 
@@ -174,7 +183,9 @@ export async function generateInvoiceNode(
   additionalData: AdditionalDataTypes
 ): Promise<Buffer> {
   const xml = parseXMLString(xmlString);
-  const wersja: any = (xml as any)?.Faktura?.Naglowek?.KodFormularza?._attributes?.kodSystemowy;
+  const wersjaFa: any = (xml as any)?.Faktura?.Naglowek?.KodFormularza?._attributes?.kodSystemowy;
+  const wersjaPef: any = (xml as any)?.Invoice?.ProfileID?._text ?? (xml as any)?.CreditNote?.ProfileID?._text;
+  const wersja: any = wersjaFa ?? wersjaPef;
 
   switch (wersja) {
     case 'FA (1)':
@@ -185,7 +196,13 @@ export async function generateInvoiceNode(
       return (generateFA3((xml as any).Faktura as Faktura3, additionalData) as any).getBuffer();
     case 'FA_RR(1)':
     case 'FA_RR (1)':
-      return (generateFARR((xml as any).Faktura as FakturaRR, additionalData) as any).getBuffer();
+      return (generateFARR((xml as any).Faktura as FaRR, additionalData) as any).getBuffer();
+    case 'urn:fdc:peppol.eu:2017:poacc:billing:01:1.0':
+      return (generateBasicPEF((xml as any).Invoice as PEFBasicInvoice, additionalData) as any).getBuffer();
+    case 'urn:fdc:www.efaktura.gov.pl:ver2.0:corr_inv:ver4.0':
+      return (generateCorrectivePEF((xml as any).CreditNote as PEFCorrectiveInvoice, additionalData) as any).getBuffer();
+    case 'urn:fdc:www.efaktura.gov.pl:ver2.0:plinv:ver1.4':
+      return (generateSpecPEF((xml as any).Invoice as PEFSpecInvoice, additionalData) as any).getBuffer();
     default:
       throw new Error(`Nieobsługiwana wersja faktury: ${wersja}`);
   }
@@ -194,16 +211,21 @@ export async function generateInvoiceNode(
 /**
  * Generuje PDF UPO z ciągu XML (dla Node.js)
  */
-export async function generatePDFUPONode(xmlString: string): Promise<Buffer> {
+export async function generatePDFUPONode(
+  xmlString: string,
+  additionalData?: Pick<AdditionalDataTypes, 'watermark' | 'creator'>
+): Promise<Buffer> {
   const upo = parseXMLString(xmlString) as Upo;
   const docDefinition: TDocumentDefinitions = {
+    info: generateInfo(additionalData?.creator),
+    ...generateWatermark(additionalData?.watermark),
     content: [generateNaglowekUPO(upo.Potwierdzenie!), generateDokumentUPO(upo.Potwierdzenie!)],
     ...generateStyle(),
     pageSize: 'A4',
     pageOrientation: 'landscape',
     footer: function (currentPage: number, pageCount: number) {
       return {
-        text: currentPage.toString() + ' z ' + pageCount,
+        text: `${currentPage.toString()} ${i18n.t('invoice.footer.pagesTotal')} ${pageCount}`,
         alignment: Position.RIGHT,
         margin: [0, 0, 20, 0],
       };

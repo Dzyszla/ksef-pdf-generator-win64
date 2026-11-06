@@ -364,6 +364,8 @@
       "vatGroupMemberRecipient": "Członek grupy VAT - odbiorca"
     }
   },
+  "noData": "Brak danych",
+  "generatorName": " ksef-pdf-generator",
   "invoice": {
     "additionalInformation": {
       "additionalDescription": "Dodatkowy opis",
@@ -914,7 +916,7 @@
       "sessionReferenceNumber": "Numer referencyjny sesji: ",
       "upoKsef": "Urzędowe poświadczenie odbioru dokumentu elektronicznego KSeF",
       "upoPage": "Strona dokumentu UPO: ",
-      "upoPageTotal": "Całkowita liczba stron dokumentu UPO: ",
+      "upoPageTotal": "Całkowita liczba części dokumentu UPO: ",
       "vendorNIP": "NIP sprzedawcy",
       "xsdFileLogicName": "Nazwa pliku XSD struktury logicznej dotycząca przesłanego dokumentu:",
       "nip": "NIP"
@@ -927,14 +929,15 @@
   "pef": {
     "from": "od",
     "to": "do",
-    "after": "Stan przed korektą",
-    "before": "Stan po korekcie",
+    "before": "Stan przed korektą",
+    "after": "Stan po korekcie",
     "sum": "Suma",
     "invoiceHeader": {
       "invoice": "FAKTURA",
       "correctiveInvoice": "FAKTURA KORYGUJĄCA",
       "documentCurrencyCode": "Waluta faktury",
       "payableAmount": "Kwota do zapłaty",
+      "settlementAmount": "Kwota do rozliczenia",
       "dueDate": "Termin płatności",
       "buyerReference": "Znak kupującego",
       "issueDate": "Data wystawienia faktury",
@@ -1086,7 +1089,7 @@
       "invoiceItemId": "Identyfikator przedmiotu fakturowania w pozycji faktury",
       "charges": "Obciążenia",
       "discounts": "Upusty",
-      "taxVat": "Podatek Vat",
+      "taxVat": "Podatek VAT",
       "grossAmount": "Kwota brutto"
     },
     "taxCategory": {

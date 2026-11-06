@@ -46,6 +46,7 @@ interface CliArgs {
   qrCode?: string;
   qr2Code?: string;
   watermark?: string;
+  creator?: string;
   lang?: string;
   font?: string;
   stream: boolean;
@@ -124,6 +125,12 @@ function parseArgs(): CliArgs {
           i++;
         }
         break;
+      case '--creator':
+        if (nextArg) {
+          result.creator = nextArg;
+          i++;
+        }
+        break;
       case '--lang':
         if (nextArg) {
           result.lang = nextArg;
@@ -171,23 +178,26 @@ Fork projektu Ministerstwa Finansów z obsługą CLI dla Windows 64-bit.
 - Oficjalne repozytorium MF: https://github.com/CIRFMF/ksef-pdf-generator
 
 Użycie:
-  ${exeName} -t upo -i <ścieżka> -o <ścieżka> [--watermark <tekst>] [--lang <ścieżka>] [--font <nazwa>]
-  ${exeName} -t upo --stream [--watermark <tekst>] [--lang <ścieżka>] [--font <nazwa>]
-  ${exeName} -t invoice -i <ścieżka> -o <ścieżka> [--nrKSeF <wartość>] --qrCode <url> [--acquisitionDate <data>] [--watermark <tekst>] [--lang <ścieżka>] [--font <nazwa>]
-  ${exeName} -t invoice -i <ścieżka> -o <ścieżka> --qrCode <url> --qr2Code <url> [--acquisitionDate <data>] [--watermark <tekst>] [--lang <ścieżka>] [--font <nazwa>]
-  ${exeName} -t invoice --nrKSeF <url> --qrCode <url> --stream [--acquisitionDate <data>] [--watermark <tekst>] [--lang <ścieżka>] [--font <nazwa>]
-  ${exeName} -t invoice --qrCode <url> --qr2Code <url> --stream [--acquisitionDate <data>] [--watermark <tekst>] [--lang <ścieżka>] [--font <nazwa>]
+  ${exeName} -t upo -i <ścieżka> -o <ścieżka> [--watermark <tekst>] [--creator <tekst>] [--lang <ścieżka>] [--font <nazwa>]
+  ${exeName} -t upo --stream [--watermark <tekst>] [--creator <tekst>] [--lang <ścieżka>] [--font <nazwa>]
+  ${exeName} -t invoice -i <ścieżka> -o <ścieżka> [--nrKSeF <wartość>] --qrCode <url> [--acquisitionDate <data>] [--watermark <tekst>] [--creator <tekst>] [--lang <ścieżka>] [--font <nazwa>]
+  ${exeName} -t invoice -i <ścieżka> -o <ścieżka> --qrCode <url> --qr2Code <url> [--acquisitionDate <data>] [--watermark <tekst>] [--creator <tekst>] [--lang <ścieżka>] [--font <nazwa>]
+  ${exeName} -t invoice --nrKSeF <url> --qrCode <url> --stream [--acquisitionDate <data>] [--watermark <tekst>] [--creator <tekst>] [--lang <ścieżka>] [--font <nazwa>]
+  ${exeName} -t invoice --qrCode <url> --qr2Code <url> --stream [--acquisitionDate <data>] [--watermark <tekst>] [--creator <tekst>] [--lang <ścieżka>] [--font <nazwa>]
   ${exeName} -h
 
 Opcje:
   -i, --input <ścieżka>      Ścieżka do pliku XML wejściowego (wymagane w trybie plikowym)
   -o, --output <ścieżka>     Ścieżka do pliku PDF wyjściowego (opcjonalne, tylko w trybie plikowym)
-  -t, --type <typ>           Typ dokumentu: 'invoice' lub 'upo' (wymagane)
+  -t, --type <typ>           Typ dokumentu: 'invoice' lub 'upo' (wymagane);
+                             'invoice' obsługuje FA(1), FA(2), FA(3), FA_RR(1) oraz PEF (UBL Invoice/CreditNote)
   --nrKSeF <wartość>         Numer KSeF (dla faktur; przy braku pobierany z nazwy pliku wejściowego, jeśli ma format numeru KSeF)
   --acquisitionDate <data>  Data nadania numeru KSeF (opcjonalne dla faktur)
   --qrCode <url>             URL kodu QR (wymagane dla faktur), obsługuje parametry {hash}, {nip}, {p1}
+                             (dla PEF: {nip} - NIP sprzedawcy z AccountingSupplierParty, {p1} - IssueDate)
   --qr2Code <url>            URL kodu QR2 (wymagane dla faktur), obsługuje parametry {hash}, {nip}, {p1}
   --watermark <tekst>        Tekst w tle strony (znak wodny)
+  --creator <tekst>          Nazwa aplikacji tworzącej dokument, zapisywana w metadanych PDF (Creator)
   --lang <ścieżka>           Generowanie faktury w innym języku - w parametrze <ścieżka> plik json z tłumaczeniami dla dokumentu
   --font <nazwa>              Rodzina czcionek zainstalowana w Windows, np. "Arial" lub "Aptos"
   --stream                   Tryb strumieniowy: XML ze stdin, PDF do stdout
@@ -241,28 +251,70 @@ function calculateSHA256Base64URL(data: string): string {
 }
 
 /**
- * Wyciąga wartość NIP z parsowanego XML
+ * Zwraca tekst węzła XML (string lub obiekt z _text)
  */
-function extractNIP(xml: any): string | null {
-  const nip = xml?.Faktura?.Podmiot1?.DaneIdentyfikacyjne?.NIP;
-  if (!nip) {
+function getNodeText(node: any): string | null {
+  if (!node) {
     return null;
   }
-  // NIP może być stringiem lub obiektem z _text
-  return typeof nip === 'string' ? nip : nip._text || null;
+  return typeof node === 'string' ? node : node._text || null;
+}
+
+function asArray<T>(value: T | T[] | undefined): T[] {
+  if (value === undefined || value === null) {
+    return [];
+  }
+  return Array.isArray(value) ? value : [value];
 }
 
 /**
- * Wyciąga wartość P_1 z parsowanego XML i formatuje na dd-mm-yyyy
+ * Zwraca główny element faktury PEF (Invoice lub CreditNote)
  */
-function extractP1Formatted(xml: any): string | null {
-  const p1 = xml?.Faktura?.Fa?.P_1;
-  if (!p1) {
+function getPEFRoot(xml: any): any {
+  return xml?.Invoice ?? xml?.CreditNote;
+}
+
+/**
+ * Wyciąga NIP sprzedawcy z faktury PEF (AccountingSupplierParty):
+ * PartyTaxScheme/CompanyID, PartyLegalEntity/CompanyID lub EndpointID - pierwsza wartość będąca polskim NIP
+ */
+function extractPEFSellerNIP(xml: any): string | null {
+  const party = getPEFRoot(xml)?.AccountingSupplierParty?.Party;
+  if (!party) {
     return null;
   }
-  
-  // P_1 może być stringiem lub obiektem z _text
-  const dateStr = typeof p1 === 'string' ? p1 : p1._text || null;
+
+  const candidates = [
+    ...asArray<any>(party.PartyTaxScheme).map(taxScheme => getNodeText(taxScheme?.CompanyID)),
+    ...asArray<any>(party.PartyLegalEntity).map(legalEntity => getNodeText(legalEntity?.CompanyID)),
+    getNodeText(party.EndpointID),
+  ];
+
+  for (const candidate of candidates) {
+    const normalized = candidate?.replace(/[\s-]/g, '').replace(/^PL/i, '');
+    if (normalized && /^\d{10}$/.test(normalized)) {
+      return normalized;
+    }
+  }
+
+  return null;
+}
+
+/**
+ * Wyciąga wartość NIP z parsowanego XML
+ */
+function extractNIP(xml: any): string | null {
+  if (xml?.Faktura) {
+    return getNodeText(xml.Faktura.Podmiot1?.DaneIdentyfikacyjne?.NIP);
+  }
+  return extractPEFSellerNIP(xml);
+}
+
+/**
+ * Wyciąga wartość P_1 (dla PEF: IssueDate) z parsowanego XML i formatuje na dd-mm-yyyy
+ */
+function extractP1Formatted(xml: any): string | null {
+  const dateStr = xml?.Faktura ? getNodeText(xml.Faktura.Fa?.P_1) : getNodeText(getPEFRoot(xml)?.IssueDate);
   if (!dateStr) {
     return null;
   }
@@ -296,7 +348,7 @@ function processQRCodeTemplate(qrCodeTemplate: string, xmlContent: string, xml: 
     if (nip) {
       result = result.replace(/{nip}/g, nip);
     } else {
-      throw new Error('Nie można znaleźć pola NIP w pliku XML (Faktura.Podmiot1.DaneIdentyfikacyjne.NIP)');
+      throw new Error('Nie można znaleźć pola NIP w pliku XML (Faktura.Podmiot1.DaneIdentyfikacyjne.NIP lub dla PEF AccountingSupplierParty.Party)');
     }
   }
   
@@ -306,7 +358,7 @@ function processQRCodeTemplate(qrCodeTemplate: string, xmlContent: string, xml: 
     if (p1) {
       result = result.replace(/{p1}/g, p1);
     } else {
-      throw new Error('Nie można znaleźć pola P_1 w pliku XML (Faktura.Fa.P_1)');
+      throw new Error('Nie można znaleźć pola P_1 w pliku XML (Faktura.Fa.P_1 lub dla PEF IssueDate)');
     }
   }
   
@@ -395,7 +447,8 @@ async function main(): Promise<void> {
         acDate: args.acquisitionDate,
         qrCode: processedQRCode,
         qr2Code: processedQR2Code,
-        watermark: args.watermark
+        watermark: args.watermark,
+        creator: args.creator
       };
 
       if (!args.stream) {
@@ -428,7 +481,7 @@ async function main(): Promise<void> {
       
       await i18nReady(args.lang);
     	
-      const pdfBuffer = await generatePDFUPONode(inputContent);
+      const pdfBuffer = await generatePDFUPONode(inputContent, { watermark: args.watermark, creator: args.creator });
       
       if (args.stream) {
         // Tryb strumieniowy - zapisz do stdout

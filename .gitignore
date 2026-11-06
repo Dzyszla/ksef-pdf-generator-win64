@@ -21,7 +21,10 @@ ksef-pdf-gen-robocza.rc
 KSeF-PDFGen.exe
 AGENTS.md
 ksef-pdf-gen-26_7.rc
+ksef-pdf-gen-26_11.rc
 test.bat
 /test
 scripts/set-package-version.cjs
 package-lock.json
+generate-lang-json.bat
+scripts/generate-lang-json.cjs

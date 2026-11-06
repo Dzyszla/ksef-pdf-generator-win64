@@ -9,6 +9,7 @@ type
 	TGenOptions = record
 		AcDate: TDateTime;
 		Watermark: String;
+		Creator: String;
 		LangFileName: String;
 		FontName: String;
 	end;		
@@ -73,7 +74,7 @@ begin
 
 	if aXMLType = xtUPO then
 		Cmd := Format('"%sKSeF-PDFGen.exe" --stream -t upo', [ExtractFilePath(ParamStr(0))])
-	else if aXMLType.IsFa then
+	else if aXMLType = xtFA then
 	begin
 		if aNrKSeF.IsEmpty then
 			aNrKSeF := '/NIE NADANY/';
@@ -85,7 +86,10 @@ begin
 		raise Exception.Create('Unknown XML type');
 
 	if not aOptions.Watermark.IsEmpty then
-		Cmd := Format('%s --watermark "%s"', [Cmd, aWatermark.Replace('"', '""')]);
+		Cmd := Format('%s --watermark "%s"', [Cmd, aOptions.Watermark.Replace('"', '""')]);
+
+	if not aOptions.Creator.IsEmpty then
+		Cmd := Format('%s --creator "%s"', [Cmd, aOptions.Creator.Replace('"', '""')]);
 
 	if not aOptions.LangFileName.IsEmpty and FileExists(aOptions.LangFileName) then
 		Cmd := Format('%s --lang "%s"', [Cmd, aOptions.LangFileName.Replace('"', '""')]);

@@ -57,14 +57,15 @@ ksef-pdf-generator.exe --help
 
 - `-i, --input <ścieżka>` - Ścieżka do pliku XML wejściowego (wymagane w trybie plikowym)
 - `-o, --output <ścieżka>` - Ścieżka do pliku PDF wyjściowego (opcjonalne, tylko w trybie plikowym, domyślnie: nazwa pliku wejściowego z rozszerzeniem .pdf)
-- `-t, --type <typ>` - Typ dokumentu: `invoice` lub `upo` (wymagane)
+- `-t, --type <typ>` - Typ dokumentu: `invoice` lub `upo` (wymagane). `invoice` obsługuje FA(1), FA(2), FA(3), FA_RR(1) oraz PEF (UBL `Invoice`/`CreditNote` - faktura podstawowa, korygująca i specyfikacja); rodzaj rozpoznawany jest automatycznie.
 - `--nrKSeF <wartość>` - Numer KSeF. Dla faktury w trybie plikowym parametr można pominąć, jeżeli nazwa pliku XML (bez rozszerzenia) jest numerem KSeF, np. `1111111111-20251107-080080679C57-14.xml`.
 - `--acquisitionDate <data>` - Data nadania numeru KSeF (opcjonalne dla faktur)
-- `--qrCode <url>` - URL kodu QR (wymagane dla faktur)
+- `--qrCode <url>` - URL kodu QR (wymagane dla faktur); obsługuje parametry `{hash}`, `{nip}`, `{p1}`. Dla PEF `{nip}` to NIP sprzedawcy z `AccountingSupplierParty` (pierwszy 10-cyfrowy identyfikator z `PartyTaxScheme/CompanyID`, `PartyLegalEntity/CompanyID` lub `EndpointID`, bez prefiksu `PL`), a `{p1}` to `IssueDate`.
 - `--qr2Code <url>` - URL kodu QR2 (dla faktur w trybie OFFLINE)
 - `--stream` - Tryb strumieniowy: XML ze stdin, PDF do stdout
-- `--watermark <tekst>` - Tekst umieszczany w tle strony (znak wodny)
-- `--lang <ścieżka>` - Generowanie faktury w innym języku - w parametrze <ścieżka> plik json z tłumaczeniami dla dokumentu (przykładowy plik w [src/lib-public/i18n/lang/](https://github.com/Dzyszla/ksef-pdf-generator-win64/tree/main/src/lib-public/i18n/lang])
+- `--watermark <tekst>` - Tekst umieszczany w tle strony (znak wodny) - dla faktur i UPO
+- `--creator <tekst>` - Nazwa aplikacji tworzącej dokument, zapisywana w metadanych PDF (pole `Creator`; domyślnie „Brak danych”). Pole `Producer` generator ustawia automatycznie.
+- `--lang <ścieżka>` - Generowanie faktury w innym języku - w parametrze <ścieżka> plik json z tłumaczeniami dla dokumentu (przykładowy plik w [src/lib-public/i18n/lang/](https://github.com/Dzyszla/ksef-pdf-generator-win64/tree/main/src/lib-public/i18n/lang]). Pliki `pl.json` i `en.json` są generowane ze źródeł `pl.ts` / `en.ts` poleceniem `node scripts/generate-lang-json.cjs` (lub `generate-lang-json.bat`) - uruchom je po aktualizacji z upstream.
 - `-h, --help` - Wyświetla pomoc
 
 ## Uwagi

@@ -1,7 +1,7 @@
 import i18next from 'i18next';
 import fs from 'fs/promises';
 import path from 'path';
-import pl from './lang/pl.json';
+import { pl } from './lang/pl';
 
 export async function i18nReady(
   filePath?: string,

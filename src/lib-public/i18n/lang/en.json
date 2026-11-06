@@ -364,6 +364,8 @@
       "vatGroupMemberRecipient": "ExampleText"
     }
   },
+  "noData": "ExampleText",
+  "generatorName": "ExampleText",
   "invoice": {
     "additionalInformation": {
       "additionalDescription": "ExampleText",
@@ -925,9 +927,17 @@
     }
   },
   "pef": {
+    "from": "ExampleText",
+    "to": "ExampleText",
+    "before": "ExampleText",
+    "after": "ExampleText",
+    "sum": "ExampleText",
     "invoiceHeader": {
+      "invoice": "ExampleText",
+      "correctiveInvoice": "ExampleText",
       "documentCurrencyCode": "ExampleText",
       "payableAmount": "ExampleText",
+      "settlementAmount": "ExampleText",
       "dueDate": "ExampleText",
       "buyerReference": "ExampleText",
       "issueDate": "ExampleText",
@@ -967,7 +977,7 @@
     "registration": {
       "title": "ExampleText",
       "id": "ExampleText",
-      "Identifier": "ExampleText"
+      "identifier": "ExampleText"
     },
     "taxRepresentative": {
       "header": "ExampleText"
@@ -978,7 +988,7 @@
       "actualDeliveryDate": "ExampleText"
     },
     "payeeparty": {
-      "header": "Payee party",
+      "header": "ExampleText",
       "companyID": "ExampleText",
       "partyIdentificationID": "ExampleText"
     },
@@ -1027,7 +1037,7 @@
     },
     "legalMonetaryTotal": {
       "taxExclusiveAmount": "ExampleText",
-      "taxInclusiveAmount ": "ExampleText",
+      "taxInclusiveAmount": "ExampleText",
       "prepaidAmount": "ExampleText",
       "rndPrepaidAmount": "ExampleText",
       "payableAmount": "ExampleText",
@@ -1078,7 +1088,9 @@
       "purchaseOrderItemId": "ExampleText",
       "invoiceItemId": "ExampleText",
       "charges": "ExampleText",
-      "discounts": "ExampleText"
+      "discounts": "ExampleText",
+      "taxVat": "ExampleText",
+      "grossAmount": "ExampleText"
     },
     "taxCategory": {
       "AE": "ExampleText",
@@ -1091,6 +1103,24 @@
       "L": "ExampleText",
       "M": "ExampleText",
       "B": "ExampleText"
+    },
+    "diffSummary": {
+      "title": "ExampleText",
+      "table": {
+        "typeAndValue": "ExampleText",
+        "netto": "ExampleText",
+        "discount": "ExampleText"
+      }
+    },
+    "accountReckoning": {
+      "title": "ExampleText",
+      "lineNo": "ExampleText",
+      "name": "ExampleText",
+      "description": "ExampleText",
+      "period": "ExampleText",
+      "costAmount": "ExampleText",
+      "periodFrom": "ExampleText",
+      "periodTo": "ExampleText"
     }
   }
 }
